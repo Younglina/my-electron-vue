@@ -2,10 +2,10 @@
 <div class="findMusic">
     <div class="routers" @click="toRoute">
         <a href="#" data-v-url="/page/findMusic/index/recommend">推荐</a>
-        <a href="#">排行榜</a>
-        <a href="#">歌单</a>
-        <a href="#">主播音乐</a>
-        <a href="#">最新音乐</a>
+        <a href="#" data-v-url="/page/findMusic/index/rank">排行榜</a>
+        <a href="#" data-v-url="/page/findMusic/index/musics">歌单</a>
+        <!-- <a href="#">主播音乐</a> -->
+        <a href="#" data-v-url="/page/findMusic/index/newest">最新音乐</a>
     </div>
     <div class="showPages">
         <router-view></router-view>
@@ -20,6 +20,7 @@
         },
         methods:{
             toRoute(e){
+                console.log(e.target.dataset.vUrl)
                 this.$router.push(e.target.dataset.vUrl)
             }
         }
@@ -39,17 +40,18 @@
     flex-direction: column;
 }
 .routers {
-    display: flex;
-    justify-content: space-around;
-    // padding: 0 80px;
     height: 45px;
-    align-items: center;
+    line-height: 45px;
+    text-align: center;
     border-bottom: 1px solid darkgrey;
     a {
         text-decoration: none;
         color: black;
+        font-size: 14px;
+        margin: 0 30px;
+        font-weight: bold;
     }
-    a:visited {
+    a:hover {
         color: red;
     }
 }

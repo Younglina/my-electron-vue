@@ -48,7 +48,7 @@
                 <span>创建的歌单</span>
             </li>
             <li>
-                <i class="iconfont icon-yinle"></i>
+                <i class="iconfont icon-heart"></i>
                 <span>我喜欢的音乐</span>
             </li>
         </ul>

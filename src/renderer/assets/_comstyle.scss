@@ -1,0 +1,41 @@
+
+$base-border: 1px solid  rgba(169, 169, 169, 0.25);
+.title{
+    margin-left: 30px;
+    border-bottom: 5px solid  rgba(169, 169, 169, 0.25);
+    font-size:18px;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+.titleHr{
+    margin: 8px 0 20px 30px;
+    background-color:  rgba(169, 169, 169, 0.15);
+    height: 1px;
+    border: none;
+}
+
+.newMusic{
+    width: 745px;
+    height:  330px;
+    border: $base-border;
+    margin-left: 30px;
+    font-size: 12px;
+    padding: 0 10px;
+    .newList{
+        display: inline-block;
+        align-items: center;
+        padding: 5px 0;
+        width: 370px;
+        .newFont{
+            display: inline-block;
+            font-weight: bold;
+            width: 230px;
+            margin-left: 10px;
+        }
+        .newPername{
+            display: inline-block;
+            width: 70px;
+            text-align: right;
+        }
+    }
+}

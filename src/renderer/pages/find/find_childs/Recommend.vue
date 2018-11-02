@@ -1,5 +1,11 @@
 <template>
-<div class="recommend">
+<div 
+    v-loading="loading"
+    element-loading-text="加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="white"
+    class="recommend">
+    
     <el-carousel :interval="4000" type="card" height="170px" class="recCar">
     <el-carousel-item v-for="item in mvFirst" :key="item.id">
       <img class="mvImg" :src="item.cover" alt="">
@@ -57,7 +63,8 @@
                 mvFirst:[],
                 personalizedNewsong:[],
                 recommendResource:[],
-                recommend: []
+                recommend: [],
+                loading: true
             }
         },
         created(){
@@ -82,12 +89,15 @@
                 Recommends.data.recommend.unshift({id:'1',picUrl:'1',name:'每日歌曲推荐',copywriter:'根据你的口味生成，每天更新！'});
                 that.recommend = Recommends.data.recommend;
                 that.recommendResource = RecomRes.data.result.slice(0, 8).map(item=>{item.playCount=parseInt(item.playCount/10000) + '万';return item;});
+                that.loading = false;
                 }))
             )
         }
     }
 </script>
 <style lang="scss" scoped>
+@import "@/assets/_comstyle.scss";
+
 $base-border: 1px solid darkgray;
 
 .recommend,.el-carousel{
@@ -98,19 +108,10 @@ $base-border: 1px solid darkgray;
     flex-wrap: wrap;
     justify-content: space-between;
 }
-.title{
-    margin-left: 30px;
-    border-bottom: 5px solid darkgray;
-    font-size:18px;
-    font-weight: bold;
-}
 .innerTitle{
     font-size:12px;
     font-weight: bold;
     margin-left: 10px;
-}
-.titleHr{
-    margin: 2px 0 20px 30px;
 }
 .musicDiv{
     display: flex;
@@ -142,15 +143,15 @@ $base-border: 1px solid darkgray;
     margin-left: 30px;
     width: 350px;
     padding: 10px 0;
-    &:nth-child(odd) {
-        border: $base-border {
-            top: 0px;
-            left: 0px;
-        }
-    }
-    &:nth-child(2) {
-        border-bottom: $base-border
-    }
+    // &:nth-child(odd) {
+    //     border: $base-border {
+    //         top: 0px;
+    //         left: 0px;
+    //     }
+    // }
+    // &:nth-child(2) {
+    //     border-bottom: $base-border
+    // }
     .dayDiv{
         width: 125px;
         height: 125px;
@@ -174,32 +175,6 @@ $base-border: 1px solid darkgray;
         .preSpan {
             font-size: 14px;
             color: gray;
-        }
-    }
-}
-.newMusic{
-    width: 745px;
-    height:  330px;
-    border: $base-border;
-    margin-left: 30px;
-    font-size: 12px;
-    padding: 0 10px;
-    .newList{
-        display: inline-block;
-        align-items: center;
-        padding: 5px 0;
-        width: 370px;
-        border-bottom: $base-border;
-        .newFont{
-            display: inline-block;
-            font-weight: bold;
-            width: 230px;
-            margin-left: 10px;
-        }
-        .newPername{
-            display: inline-block;
-            width: 70px;
-            text-align: right;
         }
     }
 }
