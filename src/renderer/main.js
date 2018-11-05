@@ -10,6 +10,7 @@ Vue.use(ElementUI)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
+Vue.prototype.$store = store
 Vue.config.productionTip = false
 let api = 'https://www.easy-mock.com/mock/5bda694acd0e9e45c2074584'
 Vue.prototype.$api = api;//'http://47.100.49.193:3000'

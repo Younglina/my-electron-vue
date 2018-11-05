@@ -1,13 +1,14 @@
 <template>
+<keep-alive>
 <div class="menus">
-    <div class="menuUl">
+    <div class="menuUl" @click="toPage">
         <ul>
             <li class="titleLi">
                 <span>推荐</span>
             </li>
-            <li data-v-name="findMusic/index" @click="toPage">
+            <li >
                 <i class="iconfont icon-yinle"></i>
-                <span>发现音乐</span>
+                <span data-v-name="findMusic/index">发现音乐</span>
             </li>
             <li>
                 <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
@@ -31,7 +32,7 @@
                 <span>iTunes音乐</span>
             </li>
             <li>
-                <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
+                <i class="iconfont icon-plus-download"></i>
                 <span>下载的音乐</span>
             </li>
             <li>
@@ -47,39 +48,68 @@
             <li class="titleLi">
                 <span>创建的歌单</span>
             </li>
-            <li>
-                <i class="iconfont icon-heart"></i>
-                <span>我喜欢的音乐</span>
+             <li v-for="(item,index) in userPlaylist" v-if="item.userId == '111736605'" 
+             :key="item.id"
+             data-v-name="myLikes/index"
+             :data-v-id ="item.id"
+             :data-v-index ="index"
+             :class="{active:index==active}"
+             >
+                <i v-if="index===0" class="iconfont icon-heart"></i>
+                <i v-else class="iconfont icon-yinleliebiao"></i>
+                <span>{{item.name}}</span>
             </li>
         </ul>
         <ul>
             <li class="titleLi">
                 <span>收藏的歌单</span>
             </li>
-            <li>
-                <i class="iconfont icon-yinle"></i>
-                <span>收藏的歌单1</span>
-            </li>
-            <li>
-                <i class="iconfont icon-yinle"></i>
-                <span>收藏的歌单2</span>
-            </li>
-            <li>
-                <i class="iconfont icon-yinle"></i>
-                <span>收藏的歌单3</span>
+            <li v-for="(item,index) in userPlaylist" v-if="item.userId != '111736605'" 
+             :key="item.id"
+             data-v-name="myLikes/index" :data-v-id ="item.id"
+             :class="{active:index==active}"
+             >
+                <i class="iconfont icon-yinleliebiao"></i>
+                <span>{{item.name}}</span>
             </li>
         </ul>
     </div>
 </div>
+</keep-alive>
 </template>
 <script>
 export default {
     name: 'menus',
+    data(){
+        return {
+            userPlaylist:[],
+            active:0
+        }
+    },
     methods: {
         toPage(e){
-            console.log('/page/'+e.target.dataset.vName)
-            this.$router.push('/page/'+e.target.dataset.vName);
+            let name,id,index;
+            console.log(e)
+            if(e.target.dataset.vName){
+                name = e.target.dataset.vName
+                id = e.target.dataset.vId
+                index = e.target.dataset.vIndex;
+            }else{
+                name = e.target.parentNode.dataset.vName
+                id = e.target.parentNode.dataset.vId
+                index = e.target.parentNode.dataset.vIndex;
+            }
+            this.active = index;
+            this.$router.push({path:'/page/'+name,query:{ id:id}});
         }
+    },
+    created(){
+        let self = this;
+        self.$http.get(self.$api+'/user/playlist').then(res=>{
+            // self.$store.commit('setUserPlayList',res.data.playlist);
+            self.userPlaylist = res.data.playlist
+        })
+        
     }
 }
 </script>
@@ -98,7 +128,7 @@ ul {
     list-style: none;
     line-height: 30px;
     margin: 0;
-    padding-left: 20px;
+    padding-left: 0px;
     font-size: 14px;
     .titleLi {
             margin-left: -25px;
@@ -106,9 +136,18 @@ ul {
             color: darkgray;
     }
     li {
+        white-space: nowrap;
+        overflow: hidden;
+        padding-left: 20px;
         span {
             margin-left: 10px;
         }
+        &:hover {
+            background-color: #e3e3e3
+        }
     }
+}
+.active{
+    background-color: #e3e3e3;
 }
 </style>

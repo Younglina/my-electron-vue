@@ -1,17 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import { createPersistedState, createSharedMutations } from 'vuex-electron'
-
-import modules from './modules'
-
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules,
-  plugins: [
-    createPersistedState(),
-    createSharedMutations()
-  ],
+  state:{
+    userPlayList:[]
+  },
+  mutations:{
+    setUserPlayList:(state, data) => {
+      console.log('setUserPlayList')
+      state.userPlayList = data
+    }
+  },
+  getters: {
+    getUserPlayList: (state) => {
+      return state.userPlayList
+    }
+  },
   strict: process.env.NODE_ENV !== 'production'
 })

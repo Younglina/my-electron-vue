@@ -32,6 +32,10 @@ export default new Router({
             }
           ]
         },
+        {
+          path: '/page/myLikes/:name',
+          component: require('@/pages/myLikes/myLike').default,
+        }
       ]
     },
     
