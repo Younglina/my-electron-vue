@@ -1,5 +1,5 @@
 ### 简介
-像官网说的那样，electron-vue就是基于 vue 来构造 electron 应用程序的样板代码。electron-vue开发起来就和vue一样，只是如果有特殊的需求需要修改应用的话就要用到electron相关的api.   
+像官网说的那样，electron-vue就是基于 vue 来构造 electron 应用程序的样板代码。electron-vue开发起来就和vue一样，只是如果有特殊的需求需要修改应用的话就要用到electron相关的api，项目中的数据来自[这里](https://binaryify.github.io/NeteaseCloudMusicApi)，感谢大佬的分享。项目地址[git地址](https://github.com/lucaswww/my-electron-vue)   
 ### electron
 Electron是由Github开发，用HTML，CSS和JavaScript来**构建跨平台桌面应用程序**的一个开源库。 Electron通过将Chromium和Node.js合并到同一个运行时环境中，并将其打包为Mac，Windows和Linux系统下的应用来实现这一目的。(摘之[官网](https://electronjs.org/docs/tutorial/about))  
 
@@ -15,6 +15,9 @@ vue的话就不多提了，[网站](https://cn.vuejs.org/v2/guide/)
 ![](https://user-gold-cdn.xitu.io/2018/11/2/166d3d7735e372f4?w=1000&h=670&f=png&s=467554)
 
 ![](https://user-gold-cdn.xitu.io/2018/11/2/166d3d7258266506?w=1000&h=670&f=png&s=114968)
+
+
+![](https://user-gold-cdn.xitu.io/2018/11/5/166e3149d80490b3?w=1000&h=670&f=png&s=164060)
 ### 项目流程
 可以先去[electron官网](https://electronjs.org/docs/tutorial/first-app)了解一下它的开发流程，知道它大体是个怎样的情况就好，后面使用的时候可以再来看看它的api.
 #### 搭建
@@ -73,4 +76,3 @@ element的icon可能并不能满足我们的需求，这时候可以选择使用
 
 ### 最后
 界面是两天开发出来的。。所以某些样式不太美观。有个问题是打包以后iconfont不显示了，这个问题后面再解决一下，最直接的办法还是把它下到本地引用。
-[git地址](https://github.com/lucaswww/my-electron-vue)
