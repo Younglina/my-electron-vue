@@ -35,12 +35,18 @@
                 <i class="iconfont icon-plus-download"></i>
                 <span>下载的音乐</span>
             </li>
-            <li>
-                <i class="iconfont icon-desktop"></i>
+            <li data-v-name="my/my"
+             data-v-id ="singer"
+             data-v-index ="mySinger"
+             :class="{active:'mySinger'==active}">
+                <i class="iconfont icon-user"></i>
                 <span>我的歌手</span>
             </li>
-            <li>
-                <i class="iconfont icon-user"></i>
+            <li data-v-name="my/my"
+             data-v-id ="fm"
+             data-v-index ="myFm"
+             :class="{active:'myFm'==active}">
+                <i class="iconfont icon-music"></i>
                 <span>我的电台</span>
             </li>
         </ul>

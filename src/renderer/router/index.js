@@ -8,33 +8,37 @@ export default new Router({
       path: '/', 
       redirect: '/page/findMusic/index/rank',
       name: 'home',
-      component: require('@/components/Home').default,
+      component: require('../components/Home').default,
       children: [
         {
           path: '/page/findMusic/:name',
-          component: require('@/pages/find/findMusic').default,
+          component: require('../pages/find/findMusic').default,
           children: [
             {
               path: 'recommend',
-              component: require('@/pages/find/find_childs/Recommend').default,
+              component: require('../pages/find/find_childs/Recommend').default,
             },
             {
               path: 'rank',
-              component: require('@/pages/find/find_childs/Rank').default,
+              component: require('../pages/find/find_childs/Rank').default,
             },
             {
               path: 'musics',
-              component: require('@/pages/find/find_childs/Musicpage').default,
+              component: require('../pages/find/find_childs/Musicpage').default,
             },
             {
               path: 'newest',
-              component: require('@/pages/find/find_childs/Newest').default,
+              component: require('../pages/find/find_childs/Newest').default,
             }
           ]
         },
         {
           path: '/page/myLikes/:name',
-          component: require('@/pages/myLikes/myLike').default,
+          component: require('../pages/myLikes/myLike').default,
+        },
+        {
+          path: '/page/my/:name',
+          component: require('../pages/my/My').default,
         }
       ]
     },
