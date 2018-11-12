@@ -24,6 +24,9 @@ vue的话就不多提了，[网站](https://cn.vuejs.org/v2/guide/)
 我的歌手、电台
 ![](https://user-gold-cdn.xitu.io/2018/11/10/166fb73940eddf40?w=1000&h=670&f=png&s=77279)
 ![](https://user-gold-cdn.xitu.io/2018/11/10/166fb7459cf50a1a?w=1000&h=670&f=png&s=78189)
+* 18/11/12更新
+播放页面暂时排版
+![](https://user-gold-cdn.xitu.io/2018/11/12/16707128f076819d?w=1000&h=670&f=png&s=452343)
 ### 项目流程
 可以先去[electron官网](https://electronjs.org/docs/tutorial/first-app)了解一下它的开发流程，知道它大体是个怎样的情况就好，后面使用的时候可以再来看看它的api.
 #### 搭建
