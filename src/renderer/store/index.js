@@ -5,17 +5,25 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state:{
-    userPlayList:[]
+    userPlayList:[],
+    isPlaying:false
   },
   mutations:{
     setUserPlayList:(state, data) => {
       console.log('setUserPlayList')
       state.userPlayList = data
+    },
+    setIsPlaying:(state)=>{
+      console.log('setIsPlaying')
+      state.isPlaying = !state.isPlaying
     }
   },
   getters: {
     getUserPlayList: (state) => {
       return state.userPlayList
+    },
+    getIsPlaying: (state) =>{
+      return state.isPlaying
     }
   },
   strict: process.env.NODE_ENV !== 'production'

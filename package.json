@@ -52,8 +52,10 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "better-scroll": "^1.13.2",
     "electron-packager": "^12.2.0",
     "element-ui": "^2.4.9",
+    "lyric-parser": "^1.0.1",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6",
     "vue-router": "^3.0.1",

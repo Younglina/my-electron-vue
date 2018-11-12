@@ -1,6 +1,6 @@
 <template>
 <keep-alive>
-<div class="menus">
+<div class="menus" v-show="showMenus">
     <div class="menuUl" @click="toPage">
         <ul>
             <li class="titleLi">
@@ -31,7 +31,10 @@
                 <i class="iconfont icon-yinle"></i>
                 <span>iTunes音乐</span>
             </li>
-            <li>
+            <li data-v-name="Playing"
+                data-v-index ="playing"
+                :class="{active:'playing'==active}"
+            >
                 <i class="iconfont icon-plus-download"></i>
                 <span>下载的音乐</span>
             </li>
@@ -89,13 +92,14 @@ export default {
     data(){
         return {
             userPlaylist:[],
-            active:0
+            active:0,
+            showMenus:true
         }
     },
     methods: {
         toPage(e){
             let name,id,index;
-            console.log(e)
+            
             if(e.target.dataset.vName){
                 name = e.target.dataset.vName
                 id = e.target.dataset.vId
@@ -106,6 +110,10 @@ export default {
                 index = e.target.parentNode.dataset.vIndex;
             }
             this.active = index;
+            if(index=='playing'){
+                this.showMenus=false;
+            }
+            console.log('/page/'+name)
             this.$router.push({path:'/page/'+name,query:{ id:id}});
         }
     },
@@ -128,6 +136,7 @@ export default {
     .menuUl{
         display: flex;
         flex-direction: column;
+        width: 100%;
     }
 }
 ul {

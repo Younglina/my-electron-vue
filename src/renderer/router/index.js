@@ -39,6 +39,10 @@ export default new Router({
         {
           path: '/page/my/:name',
           component: require('../pages/my/My').default,
+        },
+        {
+          path: '/page/Playing',
+          component: require('../pages/playing/Playing').default
         }
       ]
     },

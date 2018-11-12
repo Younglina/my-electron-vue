@@ -5,7 +5,7 @@
       <div class="topCenter">
         <div>
           <div class="btnGroups">
-            <button class="btnPre"><i class="el-icon-arrow-left"></i></button>
+            <button class="btnPre" @click="back"><i class="el-icon-arrow-left"></i></button>
             <button class="btnNext"><i class="el-icon-arrow-right"></i></button>
           </div>
           <div class="topSearch">
@@ -31,7 +31,7 @@
     <div class="playDiv">
       <div class="playControl">
         <i class="iconfont icon-shangyishou"></i>
-        <i class="iconfont icon-zanting iconCent"></i>
+        <i class="iconfont icon-zanting iconCent" @click="togglePlay"></i>
         <i class="iconfont icon-shangyishou1"></i>
       </div>
       <div style="display:block; width:410px;margin-left: 70px;">
@@ -54,10 +54,19 @@
     components: {
       menus
     },
-    created() {
+    data() {
+      return {
   
+      }
     },
-    methods: {}
+    methods: {
+      back() {
+        this.$router.back(-1)
+      },
+      togglePlay() {
+       this.$store.commit('setIsPlaying')
+      }
+    }
   };
 </script>
 
@@ -89,6 +98,7 @@
     padding: 2px 5px;
     height: 60px;
     align-items: center;
+    z-index: 100;
     background-color: rgb(168, 19, 3);
     .iconClo {
       color: white;
