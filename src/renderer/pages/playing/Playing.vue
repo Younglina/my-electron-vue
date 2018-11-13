@@ -2,7 +2,7 @@
     <div v-cloak v-loading='loading' element-loading-text='加载中' element-loading-spinner='el-icon-loading' element-loading-background='white' class="playingMain">
         <div class="lyric-wrapper" ref="lyricList">
             <img :src="playImg" class="background">
-            <div class="pendant" :class="{imgPluse:!isPlaying,imgPlay:isPlaying}"></div>
+            <!-- <div class="pendant" :class="{imgPluse:!isPlaying,imgPlay:isPlaying}"></div> -->
             <div class="playImgDiv">
                 <!-- <img class="stink" src="../../assets/stink.png" alt=""> -->
                 <img class="playImg" :src="playImg" :class="{playPause:!isPlaying}">
@@ -30,23 +30,87 @@
             <div class="playBtmLeft">
                 <div>
                     <span class="title">听友评论</span>
-                    <span class="innerTitle">(已有***条评论)</span>
+                    <span class="innerTitle">(已有{{commentTotal}}条评论)</span>
+                    <hr class="titleHr" />
                 </div>
-                <div>
-                    <el-input></el-input>
+                <div class="inputComent">
+                    <el-input type="textarea" :rows="2"></el-input>
+                    <div style=" margin-top: 5px;">
+                        <span>^-^</span>
+                        <span>@</span>
+                        <el-button size="mini" style="float:right">评论</el-button>
+                    </div>
                 </div>
-                <div class="comtMain">
-                    <img src="../../assets/head.jpeg" class="comtUserImg" alt="">
+                <span class="comtType">精彩评论</span>
+                <div class="comtMain" v-for="item in hotComments" :key="item.commentId">
+                    <img :src="item.user.avatarUrl" class="comtUserImg" alt="">
                     <div class="comtDiv">
                         <div class="comtUserDiv">
-                            <span class="comtUser">asdfas</span>
-                            <span>123123123123123123123123</span>
+                            <span class="comtUser">{{item.user.nickname}}:</span>
+                            <span>{{item.content}}</span>
                         </div>
                         <div class="comTimeDiv">
-                            <span class="comtTime">11月11日11:11</span>
+                            <span class="comtTime">{{new Date(item.time).toLocaleString()}}</span>
                             <div class="comtOp">
-                                <span><i class="iconfont icon-like"></i>(1233123)</span>
+                                <span><i class="iconfont icon-like"></i>({{item.likedCount}})</span>
                                 <span>回复</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <span class="comtType">最新评论({{commentTotal}})</span>
+                <div class="comtMain" v-for="item in comments" :key="item.commentId">
+                    <img :src="item.user.avatarUrl" class="comtUserImg" alt="">
+                    <div class="comtDiv">
+                        <div class="comtUserDiv">
+                            <span class="comtUser">{{item.user.nickname}}:</span>
+                            <span>{{item.content}}</span>
+                        </div>
+                        <div class="comTimeDiv">
+                            <span class="comtTime">{{new Date(item.time).toLocaleString()}}</span>
+                            <div class="comtOp">
+                                <span><i class="iconfont icon-like"></i>({{item.likedCount}})</span>
+                                <span>回复</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="playBtmRight">
+                <span class="title">包含这首歌的歌单</span>
+                <hr class="titleHr" />
+                <div>
+                    <div v-for="item in simiPlaylist" :key="item.id" class="simiDiv">
+                        <img :src="item.coverImgUrl" alt="" style="width:50px;height: 50px;">
+                        <div class="simiInerDiv">
+                            <span>{{item.name}}</span>
+                            <span class="simiSpan">播放{{parseInt(item.playCount/10000)}}万</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="simiSongMain">
+                    <span class="title">相似歌曲</span>
+                    <hr class="titleHr" />
+                    <div>
+                        <div v-for="item in simiSongs" :key="item.id" class="simiSongDiv">
+                            <span><i class="iconfont icon-music"></i></span>
+                            <span>{{item.name}}</span>
+                            <span class="simiArtName">{{item.artName}}</span>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="simiSongMain">
+                    <span class="title">喜欢这首歌的人</span>
+                    <hr class="titleHr" />
+                    <div>
+                        <div v-for="item in simiUser" :key="item.id" class="simiSongDiv">
+                            <img :src="item.avatorUrl" alt="" style="width:50px;height: 50px;">
+                            <div class="simiInerDiv">
+                                <span>{{item.nickname}}</span>
+                                <span class="simiSpan">{{item.recommendReason}}</span>
                             </div>
                         </div>
                     </div>
@@ -74,7 +138,13 @@
                 isPlaying: '',
                 showImg: true,
                 open: false,
-                playImg: ''
+                playImg: '',
+                hotComments: '',
+                comments: '',
+                commentTotal: '',
+                simiPlaylist: [],
+                simiSongs: [],
+                simiUser: []
             }
         },
         async created() {
@@ -85,9 +155,51 @@
             await this.$http.get("http://47.100.49.193:3000/song/detail?ids=" + 1294899029).then(res => {
                 this.songDetail = res.data.songs[0];
             })
-            this.$http.get(" http://47.100.49.193:3000/album?id=" + this.songDetail.al.id).then(res => {
+            this.$http.get("http://47.100.49.193:3000/album?id=" + this.songDetail.al.id).then(res => {
                 this.playImg = res.data.album.picUrl
             })
+            this.$http.get("http://47.100.49.193:3000/comment/music?id=" + 1294899029).then(res => {
+                this.hotComments = res.data.hotComments.slice(0, 10);
+                this.comments = res.data.comments;
+                this.commentTotal = res.data.total;
+            })
+            this.$http.get("http://47.100.49.193:3000/simi/playlist?id=" + 1294899029).then(res => {
+                res.data.playlists.map(item => {
+                    this.simiPlaylist.push({
+                        desc: item.description,
+                        name: item.name,
+                        id: item.id,
+                        coverImgUrl: item.coverImgUrl,
+                        playCount: item.playCount
+                    })
+                })
+            })
+    
+            this.$http.get("http://47.100.49.193:3000/simi/song?id=" + 1294899029).then(res => {
+                res.data.songs.slice(0, 5).map(item => {
+                    this.simiSongs.push({
+                        artName: item.artists[0].name,
+                        name: item.name,
+                        id: item.id,
+                    })
+                })
+            })
+    
+            this.$http.get("http://47.100.49.193:3000/simi/user?id=1294899029").then(res => {
+                setTimeout(()=>{
+                    let a =  res.data.userprofiles;
+                    a.map(item => {
+                    this.simiUser.push({
+                        userName: item.nickname,
+                        id: item.userId,
+                        avatarUrl: item.avatarUrl,
+                        recommendReason: item.recommendReason
+                    })
+                })
+                },1)
+                
+            })
+    
             // this.isPlaying = this.$store.getters.getIsPlaying;
         },
         methods: {
@@ -248,26 +360,47 @@
         }
     }
     
+    .title {
+        margin: 0
+    }
+    
     .playBtmDiv {
         background-color: white;
         width: 100%;
-        .playBtmLeft{
+        display: flex;
+        .playBtmLeft {
             width: 510px;
+            padding-left: 30px;
+            .innerTitle {
+                font-size: 12px;
+                color: gray;
+                margin-left: 10px;
+            }
+            .inputComent {
+                border: 1px solid gainsboro;
+                padding: 10px 10px 15px 10px;
+                margin: 25px 0 30px 0;
+            }
+            .comtType {
+                font-size: 14px;
+                font-weight: bold;
+            }
         }
         .comtMain {
             display: flex;
-            padding: 10px 0;
+            padding: 15px 0;
+            border-top: 1px dotted gray;
             .comtUserImg {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                flex-grow: 1;
             }
             .comtDiv {
                 width: 100%;
-                font-size: 14px;
+                font-size: 12px;
                 margin-left: 10px;
                 .comtUserDiv {
-                    margin-top: 5px;
                     .comtUser {
                         color: #1560a9;
                     }
@@ -275,10 +408,46 @@
                 .comTimeDiv {
                     display: flex;
                     font-size: 12px;
+                    margin-top: 5px;
                     justify-content: space-between;
                     .comtTime {
                         color: gray
                     }
+                }
+            }
+        }
+        .playBtmRight {
+            margin-left: 40px;
+            .simiDiv,
+            .simiInerDiv {
+                display: flex;
+                margin-top: 15px;
+            }
+            .simiDiv {
+                align-items: center;
+            }
+            .simiInerDiv {
+                flex-direction: column;
+                font-size: 12px;
+                margin-left: 10px;
+                .simiSpan {
+                    color: gray;
+                    margin-top: 5px;
+                }
+            }
+            .simiSongMain {
+                margin-top: 50px;
+            }
+            .simiSongDiv {
+                font-size: 12px;
+                margin: 10px 0;
+                i {
+                    margin-right: 10px;
+                    color: gray;
+                }
+                .simiArtName {
+                    color: gray;
+                    float: right;
                 }
             }
         }
