@@ -1,12 +1,12 @@
 <template>
 <div class="findMusic">
-    <div class="routers" @click="toRoute">
+    <!-- <div class="routers" @click="toRoute">
         <a href="#" data-v-url="/page/findMusic/index/recommend">推荐</a>
         <a href="#" data-v-url="/page/findMusic/index/rank">排行榜</a>
         <a href="#" data-v-url="/page/findMusic/index/musics">歌单</a>
-        <!-- <a href="#">主播音乐</a> -->
+        <a href="#">主播音乐</a>
         <a href="#" data-v-url="/page/findMusic/index/newest">最新音乐</a>
-    </div>
+    </div> -->
     <div class="showPages">
         <router-view></router-view>
     </div>
@@ -32,7 +32,6 @@
 }
 .showPages{
     height: 100%;
-    padding: 0 10px;
     overflow: auto;
 }
 .findMusic{

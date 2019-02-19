@@ -20,7 +20,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     height: 670,//窗口高度
     width: 1000,//窗口宽度
-    frame: true,//是否显示窗口边框
+    frame: false,//是否显示窗口边框
     resizable: false,//可否缩放
     movable: true//可否移动
   })

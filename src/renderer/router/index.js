@@ -6,7 +6,7 @@ export default new Router({
   routes: [
     {
       path: '/', 
-      redirect: '/page/findMusic/index/rank',
+      // redirect: '/page/findMusic/index/rank',
       name: 'home',
       component: require('../components/Home').default,
       children: [
@@ -39,6 +39,11 @@ export default new Router({
         {
           path: '/page/my/:name',
           component: require('../pages/my/My').default,
+        },
+        {
+          path: '/page/myInfo',
+          name:'info',
+          component: require('../pages/my/info').default,
         },
         {
           path: '/page/Playing',
