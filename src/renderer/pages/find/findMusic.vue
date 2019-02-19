@@ -19,10 +19,6 @@
             return {}
         },
         methods:{
-            toRoute(e){
-                console.log(e.target.dataset.vUrl)
-                this.$router.push(e.target.dataset.vUrl)
-            }
         }
     }
 </script>

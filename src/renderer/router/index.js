@@ -6,7 +6,7 @@ export default new Router({
   routes: [
     {
       path: '/', 
-      // redirect: '/page/findMusic/index/rank',
+      redirect: '/page/findMusic/index/recommend',
       name: 'home',
       component: require('../components/Home').default,
       children: [
@@ -16,18 +16,22 @@ export default new Router({
           children: [
             {
               path: 'recommend',
+              name: 'recommend',
               component: require('../pages/find/find_childs/Recommend').default,
             },
             {
               path: 'rank',
+              name: 'rank',
               component: require('../pages/find/find_childs/Rank').default,
             },
             {
               path: 'musics',
+              name: 'musics',
               component: require('../pages/find/find_childs/Musicpage').default,
             },
             {
               path: 'newest',
+              name: 'newest',
               component: require('../pages/find/find_childs/Newest').default,
             }
           ]

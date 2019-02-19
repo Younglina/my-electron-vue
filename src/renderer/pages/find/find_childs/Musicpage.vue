@@ -72,7 +72,7 @@
         .musicDiv {
             display: flex;
             flex-direction: column;
-            margin: 20px 0 20px 30px;
+            margin: 20px 30px 20px 0;
             .playDiv {
                 position: relative;
                 .playCount {

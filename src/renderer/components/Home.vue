@@ -6,13 +6,13 @@
         <img :src="avatarUrl" class="background">
         <div class="topHeader">
           <div class="topCenter">
-            <ul :class="[hideLi?'hideLi':'','topRouter']">
+            <ul class='topRouter' @click='toRoute'>
               <li class="active-li">个性推荐</li>
-              <li>歌单</li>
+              <li data-v-url="/page/findMusic/index/musics">歌单</li>
               <li>主播电台</li>
-              <li>排行榜</li>
+              <li data-v-url="/page/findMusic/index/rank">排行榜</li>
               <li>歌手</li>
-              <li>最新音乐</li>
+              <li data-v-url="/page/findMusic/index/newest">最新音乐</li>
             </ul>
             <div class="topAther">
               <span class="buttonSpan">
@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-        <div class='pageContent'>
+        <div class="pageContent">
           <router-view></router-view>
         </div>
       </div>
@@ -88,12 +88,15 @@ export default {
     },
     togglePlay() {
       this.$store.commit("setIsPlaying");
+    },
+    toRoute(e) {
+      console.log(e);
+      this.$router.push(e.target.dataset.vUrl);
     }
   },
   watch: {
     $route(to) {
       let temp = to.name === "info";
-      // this.hideLi = temp;
       temp
         ? (this.avatarUrl = this.$store.getters.getUserInfo.profile.avatarUrl)
         : "";
@@ -137,7 +140,7 @@ div {
     opacity: 0.6;
     filter: blur(30px);
   }
-  .pageContent{
+  .pageContent {
     overflow-y: auto;
   }
 }
@@ -162,7 +165,6 @@ div {
       li {
         margin-right: 28px;
         padding-bottom: 20px;
-        z-index: -1;
         &:hover {
           color: black;
         }
