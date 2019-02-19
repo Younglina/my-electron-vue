@@ -20,7 +20,7 @@
             </div>
         </div>
     </div>
-    <div style="margin-top:30px;">
+    <!-- <div style="margin-top:30px;">
         <span class="title">个性化推荐</span>
         <span class="innerTitle">根据你的口味生成，播放和收藏越多，推荐越准</span>
         <hr class="titleHr"/>
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div style="margin-top:30px;">
         <span class="title">新歌速递</span>
         <hr class="titleHr"/>
@@ -76,7 +76,7 @@
                 return api.get(that.$api+'/personalized/newsong');
             }
             function getRecomRes(){
-                return api.get(that.$api+'/personalized');
+                return api.get(that.$api+'/personalized/resource');
             }
             // function getRecommend(){
             //     return api.get(that.$api+'/recommend');
@@ -87,7 +87,7 @@
                 that.personalizedNewsong = NewS.data.result;
                 // Recommends.data.recommend.unshift({id:'1',picUrl:'1',name:'每日歌曲推荐',copywriter:'根据你的口味生成，每天更新！'});
                 // that.recommend = Recommends.data.recommend;
-                that.recommendResource = RecomRes.data.result.slice(0, 8).map(item=>{item.playCount=parseInt(item.playCount/10000) + '万';return item;});
+                that.recommendResource = RecomRes.data.result.slice(0, 7).map(item=>{item.playCount=parseInt(item.playCount/10000) + '万';return item;});
                 that.recommendResource.unshift({id:'1',picUrl:'1',name:'每日歌曲推荐',copywriter:'根据你的口味生成，每天更新！'});
                 that.loading = false;
                 }))

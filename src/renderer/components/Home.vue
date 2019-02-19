@@ -7,12 +7,11 @@
         <div class="topHeader">
           <div class="topCenter">
             <ul class='topRouter' @click='toRoute'>
-              <li class="active-li">个性推荐</li>
-              <li data-v-url="/page/findMusic/index/musics">歌单</li>
-              <li>主播电台</li>
-              <li data-v-url="/page/findMusic/index/rank">排行榜</li>
-              <li>歌手</li>
-              <li data-v-url="/page/findMusic/index/newest">最新音乐</li>
+              <li v-for='item in routers' 
+                :key='item.id'
+                :data-v-url = "item.url"
+                :data-v-id = "item.id"
+                :class="{'active-li':actived==item.id}">{{item.name}}</li>
             </ul>
             <div class="topAther">
               <span class="buttonSpan">
@@ -79,7 +78,16 @@ export default {
   data() {
     return {
       hideLi: false,
-      avatarUrl: ""
+      avatarUrl: "",
+      routers:[
+        {name:'个性推荐',url:'/page/findMusic/index/recommend',id:1},
+        {name:'歌单',url:'/page/findMusic/index/musics',id:2},
+        {name:'主播电台',url:'/page/findMusic/index/musics',id:3},
+        {name:'排行榜',url:'/page/findMusic/index/rank',id:4},
+        {name:'歌手',url:'/page/findMusic/index/rank',id:5},
+        {name:'最新音乐',url:'/page/findMusic/index/newest',id:6},
+      ],
+      actived:1,
     };
   },
   methods: {
@@ -90,7 +98,7 @@ export default {
       this.$store.commit("setIsPlaying");
     },
     toRoute(e) {
-      console.log(e);
+      this.actived = e.target.dataset.vId
       this.$router.push(e.target.dataset.vUrl);
     }
   },
@@ -122,7 +130,6 @@ div {
 .content,
 .pages {
   height: 100%;
-  flex: 1;
 }
 .home,
 .pages {
@@ -142,6 +149,7 @@ div {
   }
   .pageContent {
     overflow-y: auto;
+    margin-top: 80px;
   }
 }
 .topHeader {
@@ -149,6 +157,7 @@ div {
   height: 60px;
   align-items: center;
   z-index: 100;
+  position: fixed;
   .topCenter {
     align-items: center;
     .hideLi {
@@ -165,7 +174,7 @@ div {
       li {
         margin-right: 28px;
         padding-bottom: 20px;
-        &:hover {
+        &:not(.active-li):hover {
           color: black;
         }
       }
