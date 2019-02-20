@@ -158,6 +158,7 @@ div {
   align-items: center;
   z-index: 100;
   position: fixed;
+  -webkit-app-region: drag;
   .topCenter {
     align-items: center;
     .hideLi {

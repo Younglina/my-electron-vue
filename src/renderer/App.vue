@@ -18,7 +18,6 @@
     overflow: hidden;
   }
   body{
-    -webkit-app-region: drag;
     font-family: 'Source Sans Pro', sans-serif;
   }
 </style>

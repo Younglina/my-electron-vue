@@ -1,5 +1,4 @@
-import { app, BrowserWindow } from 'electron'
-
+import { app, BrowserWindow, ipcMain } from 'electron'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -22,7 +21,7 @@ function createWindow () {
     width: 1000,//窗口宽度
     frame: false,//是否显示窗口边框
     resizable: false,//可否缩放
-    movable: true//可否移动
+    movable: true,//可否移动
   })
 
   mainWindow.loadURL(winURL)
@@ -45,7 +44,9 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
+ipcMain.on('min', e=> mainWindow.minimize());
+ipcMain.on('max', e=> mainWindow.maximize());
+ipcMain.on('close', e=> mainWindow.minimize());
 /**
  * Auto Updater
  *

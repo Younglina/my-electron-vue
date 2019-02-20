@@ -1,6 +1,11 @@
 <template>
   <keep-alive>
     <div class="menus" v-show="showMenus">
+      <div class="winActive">
+        <span @click="send('close')">×</span>
+        <span @click="send('min')">-</span>
+        <span @click="send('max')"></span>
+      </div>
       <div class="menuUl" @click="toPage">
         <div class="userDiv">
           <div
@@ -107,6 +112,7 @@
   </keep-alive>
 </template>
 <script>
+const { ipcRenderer: ipc } = require("electron");
 export default {
   name: "menus",
   data() {
@@ -118,6 +124,9 @@ export default {
     };
   },
   methods: {
+    send(type) {
+      ipc.send(type);
+    },
     toPage(e) {
       let name, id, index;
 
@@ -156,8 +165,35 @@ export default {
   min-width: 180px;
   max-width: 180px;
   overflow: auto;
+  flex-direction: column;
   border-right: 1px solid gainsboro;
   height: 100%;
+  .winActive {
+    display: flex;
+    align-items: center;
+    -webkit-app-region: drag;
+    span {
+      margin: 0 5px;
+      border-radius: 50%;
+      width: 12px;
+      height: 12px;
+      line-height: 12px;
+      font-size: 14px;
+      text-align: center;
+      &:nth-child(1){
+        background: rgb(224,65,54);
+        color: rgb(151,32,29);
+      }
+      &:nth-child(2){
+        background: rgb(248,193,70);
+        color:rgb(153,87,34)
+      }
+      &:nth-child(3){
+        background: rgb(110,190,88);
+        color: rgb(45,103,21);
+      }
+    }
+  }
   .userDiv {
     display: flex;
     align-items: center;
