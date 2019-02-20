@@ -128,7 +128,7 @@ div {
 
 .home,
 .content,
-.pages {
+.pages {  
   height: 100%;
 }
 .home,
@@ -136,8 +136,8 @@ div {
   flex-direction: column;
 }
 .pages {
-  padding-left: 30px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: relative;
   .background {
     position: absolute;

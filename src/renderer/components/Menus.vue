@@ -3,18 +3,26 @@
     <div class="menus" v-show="showMenus">
       <div class="menuUl" @click="toPage">
         <div class="userDiv">
-          <div class="smallHead" data-v-name='myInfo' :style="{'backgroundImage':'url('+avatarUrl+')'}">
+          <div
+            class="smallHead"
+            data-v-name="myInfo"
+            :style="{'backgroundImage':'url('+avatarUrl+')'}"
+          >
             <!-- <img class='smallHead' src='../assets/head.jpeg'> -->
           </div>
-          <div class='userName'>
+          <div class="userName">
             <span>-皆随你</span>
             <i class="iconfont icon-bofang"></i>
           </div>
         </div>
         <ul>
-          <li>
+          <li
+            data-v-name="findMusic/index/recommend"
+            data-v-index="findMusic"
+            :class="{active:'findMusic'==active}"
+          >
             <i class="iconfont icon-yinle"></i>
-            <span data-v-name="findMusic/index">发现音乐</span>
+            <span>发现音乐</span>
           </li>
           <li>
             <i class="iconfont icon-tubiaozhizuomobanyihuifu-"></i>
@@ -106,7 +114,7 @@ export default {
       userPlaylist: [],
       active: 0,
       showMenus: true,
-      avatarUrl:'',
+      avatarUrl: ""
     };
   },
   methods: {
@@ -132,12 +140,12 @@ export default {
   },
   created() {
     let self = this;
-    self.$http.get(self.$api + "/user/detail?uid="+111736605).then(res => {
-      this.avatarUrl = res.data.profile.avatarUrl
-      this.$store.commit('setUserInfo',res.data)
+    self.$http.get(self.$api + "/user/detail?uid=" + 111736605).then(res => {
+      this.avatarUrl = res.data.profile.avatarUrl;
+      this.$store.commit("setUserInfo", res.data);
     });
-    self.$http.get(self.$api+"/user/playlist?uid="+111736605).then(res => {
-      self.$store.commit('setUserPlayList',res.data.playlist);
+    self.$http.get(self.$api + "/user/playlist?uid=" + 111736605).then(res => {
+      self.$store.commit("setUserPlayList", res.data.playlist);
       self.userPlaylist = res.data.playlist;
     });
   }
@@ -145,14 +153,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .menus {
-  width: 200px;
+  min-width: 180px;
+  max-width: 180px;
   overflow: auto;
   border-right: 1px solid gainsboro;
   height: 100%;
   .userDiv {
     display: flex;
     align-items: center;
-    padding:30px 0;
+    padding: 30px 0;
     .smallHead {
       width: 50px;
       height: 50px;
@@ -161,12 +170,12 @@ export default {
       background-size: cover;
       cursor: pointer;
     }
-    .userName{
-        font-size:14px;
-        font-weight: 500;
-        i{
-            font-size:8px;
-        }
+    .userName {
+      font-size: 14px;
+      font-weight: 500;
+      i {
+        font-size: 8px;
+      }
     }
   }
   .menuUl {
@@ -201,5 +210,7 @@ ul {
 }
 .active {
   background-color: #e3e3e3;
+  color: red;
+  border-left: 3px solid currentColor;
 }
 </style>

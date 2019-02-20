@@ -17,13 +17,13 @@
     </div>
 
     <div class="musicCont">
-      <div v-for="item in recommendResource" :key="item.id" class="musicDiv">
+      <div v-for="item in recommendResource" :key="item.id" class="musicDiv" @click="toPage">
         <div class="playDiv">
           <div class="playCount">
             <i class="iconfont icon-erji"></i>
             <span>{{item.playCount}}</span>
           </div>
-          <img class="musicPic" :src="item.picUrl" alt>
+          <img class="musicPic" :src="item.picUrl" :data-v-id="item.id" alt>
         </div>
         <span class="musicName">{{item.name}}</span>
       </div>
@@ -57,6 +57,17 @@ export default {
         return item;
       });
     });
+  },
+  methods: {
+    toPage(e) {
+      let name, id, index;
+      id = e.target.dataset.vId;
+      console.log("/page/" + name);
+      this.$router.push({
+        path: "/page/myLikes/index" + name,
+        query: { id: id }
+      });
+    }
   }
 };
 </script>
@@ -74,9 +85,9 @@ export default {
 .labelItem {
   padding: 0 10px;
   border-left: 1px solid whitesmoke;
-  &:nth-child(1){
-      padding: 0;
-      border: none;
+  &:nth-child(1) {
+    padding: 0;
+    border: none;
   }
 }
 .highRec {
@@ -137,7 +148,7 @@ export default {
   .musicDiv {
     display: flex;
     flex-direction: column;
-    margin: 20px 10px 20px 0;
+    margin: 20px 0;
     .playDiv {
       position: relative;
       .playCount {
@@ -154,6 +165,7 @@ export default {
         width: 180px;
         height: 180px;
         border-radius: 5px;
+        cursor: pointer;
       }
     }
     .musicName {

@@ -1,6 +1,6 @@
 <template>
-  <div class="playlistMain">
-    <div v-if="playlist" class="playListDiv" v-for="item in playlist" :key="item.id">
+  <div class="playlistMain"  v-if="playlist" >
+    <div class="playListDiv" v-for="item in playlist" :key="item.id">
       <div class="playItems" :style="{'backgroundImage':'url('+item.coverImgUrl+')','backgroundColor':item.backgroundColor}">
         <div class="playCount" v-if='item.playCount'>
           <i class="iconfont icon-bofang"></i>
