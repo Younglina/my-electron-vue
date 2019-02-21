@@ -1,6 +1,6 @@
 <template>
   <keep-alive>
-    <div class="menus" v-show="showMenus">
+    <div class="menus">
       <div class="winActive">
         <span @click="send('close')">×</span>
         <span @click="send('min')">-</span>
@@ -140,9 +140,6 @@ export default {
         index = e.target.parentNode.dataset.vIndex;
       }
       this.active = index;
-      if (index == "playing") {
-        this.showMenus = false;
-      }
       console.log("/page/" + name);
       this.$router.push({ path: "/page/" + name, query: { id: id } });
     }

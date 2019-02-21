@@ -51,6 +51,7 @@ export default new Router({
         },
         {
           path: '/page/Playing',
+          name:'playing',
           component: require('../pages/playing/Playing').default
         }
       ]

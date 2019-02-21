@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state:{
     userPlayList:[],
-    isPlaying:false,
+    isPlaying:true,
     userInfo:{},
     musicUrl:'',
     playing:{

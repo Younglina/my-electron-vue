@@ -1,12 +1,12 @@
 <template>
   <div class="home">
     <div class="content">
-      <menus/>
+      <menus v-show="showMenus"/>
       <div class="pages">
         <img :src="avatarUrl" class="background">
         <div class="topHeader">
           <div class="topCenter">
-            <ul class="topRouter" @click="toRoute">
+            <ul class="topRouter" @click="toRoute" v-show="showMenus">
               <li
                 v-for="item in routers"
                 :key="item.id"
@@ -46,7 +46,7 @@
     <div class="playDiv">
       <div>
         <div>
-          <audio :src='getMusicUrl' autoplay ref='myAudio'></audio>
+          <audio :src="getMusicUrl" autoplay ref="myAudio"></audio>
           <img class="playImg" :src="getPlaying.al.picUrl">
         </div>
         <div class="playName">
@@ -57,11 +57,13 @@
       <div class="playControl">
         <i class="iconfont icon-heart"></i>
         <i class="iconfont icon-icon--"></i>
-        <span class='playDuration'>00:00</span>
+        <span class="playDuration">00:00</span>
         <i class="iconfont icon-shangyishoushangyige"></i>
-        <div class='iconCent'><i class="iconfont icon-bofang" @click="togglePlay"></i></div>
+        <div class="iconCent">
+          <i class="iconfont icon-bofang" @click="togglePlay"></i>
+        </div>
         <i class="iconfont icon-xiayigexiayishou"></i>
-        <span class='playDuration'>{{duration}}</span>
+        <span class="playDuration">{{duration}}</span>
       </div>
       <div style="align-items: center;margin-left:30px;">
         <i class="iconfont icon-icon-test2"></i>
@@ -92,7 +94,8 @@ export default {
         { name: "最新音乐", url: "/page/findMusic/index/newest", id: 6 }
       ],
       actived: 1,
-      duration:0,
+      duration: 0,
+      showMenus: true
     };
   },
   methods: {
@@ -101,6 +104,7 @@ export default {
     },
     togglePlay() {
       this.$store.commit("setIsPlaying");
+      this.$refs.myAudio.paused ? this.$refs.myAudio.play():this.$refs.myAudio.pause();
     },
     toRoute(e) {
       this.actived = e.target.dataset.vId;
@@ -114,16 +118,17 @@ export default {
     getIsPlaying: function(a) {
       this.isPlaying = a;
     },
-    getMusicUrl(){
-      let temp = this.$refs.myAudio.duration
-      let tt = Math.floor(temp / 60)
-      this.duration = `0${tt}:${String(temp - tt * 60).substr(0, 2)}`
+    getMusicUrl() {
+      let temp = this.$refs.myAudio.duration;
+      let tt = Math.floor(temp / 60);
+      this.duration = `0${tt}:${String(temp - tt * 60).substr(0, 2)}`;
     },
     $route(to) {
       let temp = to.name === "info";
       temp
         ? (this.avatarUrl = this.$store.getters.getUserInfo.profile.avatarUrl)
         : "";
+      this.showMenus = to.name != "playing";
     }
   }
 };
@@ -135,9 +140,7 @@ div {
 }
 
 .home,
-.topHeader,
 .topCenter,
-.content,
 .pages {
   width: 100%;
 }
@@ -150,6 +153,9 @@ div {
 .home,
 .pages {
   flex-direction: column;
+}
+.topHeader {
+  width: 95vw;
 }
 .pages {
   padding-left: 20px;
@@ -205,7 +211,7 @@ div {
       padding-bottom: 20px;
       align-items: center;
       flex-grow: 1;
-      justify-content: space-between;
+      justify-content: flex-end;
       .buttonSpan {
         border-radius: 50%;
         padding: 3px 4px;
@@ -268,7 +274,7 @@ div {
   background-color: #f6f6f6;
   .playControl {
     align-items: center;
-    &>i {
+    & > i {
       font-size: 20px;
       color: black;
       border-radius: 50%;
@@ -278,14 +284,13 @@ div {
     .iconCent {
       font-size: 22px;
       padding: 6px;
-      border:1px solid currentColor;
+      border: 1px solid currentColor;
       border-radius: 50%;
       margin-left: 20px;
     }
-    .playDuration{
+    .playDuration {
       margin-left: 20px;
-      font-size:12px;
-
+      font-size: 12px;
     }
   }
 }

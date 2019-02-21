@@ -1,16 +1,16 @@
 <template>
-    <div v-cloak v-loading='loading' element-loading-text='加载中' element-loading-spinner='el-icon-loading' element-loading-background='white' class="playingMain">
-        <div class="lyric-wrapper" ref="lyricList">
+    <div v-cloak  class="playingMain">
+        <div class="lyric-wrapper">
             <img :src="playImg" class="background">
             <!-- <div class="pendant" :class="{imgPluse:!isPlaying,imgPlay:isPlaying}"></div> -->
             <div class="playImgDiv">
                 <!-- <img class="stink" src="../../assets/stink.png" alt=""> -->
-                <img class="playImg" :src="playImg" :class="{playPause:!isPlaying}">
+                <img class="playImg" :src="playImg" :class="{playPause:isPlaying===false}">
                 <div class="btns">
-                    <el-button size="mini" icon="el-icon-star-off">喜欢</el-button>
-                    <el-button size="mini" icon="el-icon-news">收藏</el-button>
-                    <el-button size="mini" icon="el-icon-download">下载</el-button>
-                    <el-button size="mini" icon="el-icon-share">分享</el-button>
+                    <el-button size="mini" circle icon="el-icon-star-off"></el-button>
+                    <el-button size="mini" circle icon="el-icon-news"></el-button>
+                    <el-button size="mini" circle icon="el-icon-download"></el-button>
+                    <el-button size="mini" circle icon="el-icon-share"></el-button>
                 </div>
             </div>
             <div style="width:350px">
@@ -21,9 +21,11 @@
                         <span>歌手:<a href="#">{{songDetail.ar[0].name}}</a></span>
                     </div>
                 </div>
-                <div class="lyric">
-                    <p v-for="(line,index) in currentLyric.lines" ref="lyricLine" :key="index" :class="{'current':currentLineNum===index}" class="text">{{line.txt}}</p>
-                </div>
+                <scroll :data="currentLyric.lines" ref="lyricList">
+                    <div class="lyric">
+                        <p v-for="(line,index) in currentLyric.lines" ref="lyricLine" :key="index" :class="{'current':currentLineNum===index}" class="text">{{line.txt}}</p>
+                    </div>
+                </scroll>
             </div>
         </div>
         <div class="playBtmDiv">
@@ -102,7 +104,7 @@
                     </div>
                 </div>
     
-                <div class="simiSongMain">
+                <!-- <div class="simiSongMain">
                     <span class="title">喜欢这首歌的人</span>
                     <hr class="titleHr" />
                     <div>
@@ -114,11 +116,26 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
 </template>
+<style lang="scss" scoped>
+.el-button--mini.is-circle {
+    padding: 10px;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    color: rgba(0, 0, 0, 0.41);
+}
+.el-button+.el-button {
+    margin-left: 30px;
+}
+ .current{
+    color: #fff;
+  }
+</style>
 
 <script>
     import Lyric from 'lyric-parser'
@@ -128,9 +145,9 @@
     import Scroll from '@/components/scroll'
     export default {
         name: 'playing',
+        components:{Scroll},
         data() {
             return {
-                loading: true,
                 songDetail: '',
                 currentLyric: [],
                 currentLineNum: 0,
@@ -147,14 +164,15 @@
                 simiUser: []
             }
         },
-        async created() {
+        async mounted() {
             let id = this.$route.query.id
+            let self = this
             await this.$http.get(this.$api+'/song/url?id=' + id).then(res => {
                 this.$store.commit('setMusicUrl',res.data.data[0].url)
             })
             this.$http.get(this.$api+'/lyric?id='+id).then(res => {
-                this.currentLyric = new Lyric(res.data.lrc.lyric, this.handleLyric);
-                this.loading = false;
+                this.currentLyric = new Lyric(res.data.lrc.lyric, self.handleLyric);
+                this.currentLyric.play();
             })
             
             await this.$http.get(this.$api+'/song/detail?ids=' + id).then(res => {
@@ -191,20 +209,20 @@
                 })
             })
     
-            this.$http.get(this.$api+'/simi/user?id='+id).then(res => {
-                setTimeout(()=>{
-                    let a =  res.data.userprofiles;
-                    a.map(item => {
-                    this.simiUser.push({
-                        userName: item.nickname,
-                        id: item.userId,
-                        avatarUrl: item.avatarUrl,
-                        recommendReason: item.recommendReason
-                    })
-                })
-                },1)
+            // this.$http.get(this.$api+'/simi/user?id='+id).then(res => {
+            //     setTimeout(()=>{
+            //         let a =  res.data.userprofiles;
+            //         a.map(item => {
+            //         this.simiUser.push({
+            //             userName: item.nickname,
+            //             id: item.userId,
+            //             avatarUrl: item.avatarUrl,
+            //             recommendReason: item.recommendReason
+            //         })
+            //     })
+            //     },1)
                 
-            })
+            // })
     
             // this.isPlaying = this.$store.getters.getIsPlaying;
         },
@@ -232,6 +250,7 @@
         watch: {
             getIsPlaying: function(a) {
                 this.isPlaying = a;
+                this.currentLyric.stop();
             }
         }
     }
@@ -293,7 +312,7 @@
     .lyric-wrapper {
         width: 100%;
         display: flex;
-        height: 520px;
+        height: 500px;
     }
     
     @keyframes rotates {
