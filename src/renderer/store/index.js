@@ -7,7 +7,15 @@ export default new Vuex.Store({
   state:{
     userPlayList:[],
     isPlaying:false,
-    userInfo:{}
+    userInfo:{},
+    musicUrl:'',
+    playing:{
+      al:{
+        picUrl:''
+      },
+      name:'未播放',
+      ar:[{name:''}]
+    },
   },
   mutations:{
     setUserPlayList:(state, data) => {
@@ -18,8 +26,15 @@ export default new Vuex.Store({
       console.log('setIsPlaying')
       state.isPlaying = !state.isPlaying
     },
+    setPlaying:(state,data)=>{
+      console.log('setPlaying')
+      state.playing = data
+    },
     setUserInfo:(state,data)=>{
       state.userInfo = data;
+    },
+    setMusicUrl:(state,data)=>{
+      state.musicUrl = data;
     }
   },
   getters: {
@@ -29,8 +44,14 @@ export default new Vuex.Store({
     getIsPlaying: (state) =>{
       return state.isPlaying
     },
+    getPlaying: (state) =>{
+      return state.playing
+    },
     getUserInfo:(state)=>{
       return state.userInfo
+    },
+    getMusicUrl:(state)=>{
+      return state.musicUrl
     }
   },
   strict: process.env.NODE_ENV !== 'production'

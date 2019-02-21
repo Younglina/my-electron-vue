@@ -16,9 +16,9 @@
     </el-carousel>
     <div>
       <span class="title">推荐歌单</span>
-      <div class="musicCont">
+      <div class="musicCont" @click="toPage">
         <div v-for="item in recommendResource" :key="item.id" class="musicDiv">
-          <img v-if="item.picUrl" class="musicPic" :src="item.picUrl" alt>
+          <img v-if="item.picUrl" class="musicPic" :src="item.picUrl" :data-v-id="item.id" >
           <div v-else class="musicPic">
             <span class="dateDay">{{new Date().getDate()}}</span>
             <i :class="item.icon"></i>
@@ -73,6 +73,17 @@ export default {
       recommend: [],
       loading: true
     };
+  },
+  methods:{
+     toPage(e) {
+      let name, id, index;
+      id = e.target.dataset.vId;
+      console.log("/page/" + name);
+      this.$router.push({
+        path: "/page/myLikes/index" + name,
+        query: { id: id }
+      });
+    }
   },
   created() {
     let that = this;

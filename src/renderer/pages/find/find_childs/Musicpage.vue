@@ -16,8 +16,8 @@
       <span class="labels labelItem" v-for="item in hotLabel" :key="item.id">{{item.name}}</span>
     </div>
 
-    <div class="musicCont">
-      <div v-for="item in recommendResource" :key="item.id" class="musicDiv" @click="toPage">
+    <div class="musicCont"  @click="toPage">
+      <div v-for="item in recommendResource" :key="item.id" class="musicDiv">
         <div class="playDiv">
           <div class="playCount">
             <i class="iconfont icon-erji"></i>

@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div style="width:350px">
-                <div class="songTitle">
+                <div class="songTitle" v-if='songDetail'>
                     <h3>{{songDetail.name}}</h3>
                     <div class="songDes">
                         <span>专辑:<a href="#">{{songDetail.al.name}}</a></span>
@@ -29,8 +29,8 @@
         <div class="playBtmDiv">
             <div class="playBtmLeft">
                 <div>
-                    <span class="title">听友评论</span>
-                    <span class="innerTitle">(已有{{commentTotal}}条评论)</span>
+                    <span class="title">听友评论(已有{{commentTotal}}条评论)</span>
+                    <!-- <span class="innerTitle">(已有{{commentTotal}}条评论)</span> -->
                     <hr class="titleHr" />
                 </div>
                 <div class="inputComent">
@@ -148,22 +148,28 @@
             }
         },
         async created() {
-            this.$http.get(this.$api + '/lyric').then(res => {
+            let id = this.$route.query.id
+            await this.$http.get(this.$api+'/song/url?id=' + id).then(res => {
+                this.$store.commit('setMusicUrl',res.data.data[0].url)
+            })
+            this.$http.get(this.$api+'/lyric?id='+id).then(res => {
                 this.currentLyric = new Lyric(res.data.lrc.lyric, this.handleLyric);
                 this.loading = false;
             })
-            await this.$http.get("http://47.100.49.193:3000/song/detail?ids=" + 1294899029).then(res => {
+            
+            await this.$http.get(this.$api+'/song/detail?ids=' + id).then(res => {
                 this.songDetail = res.data.songs[0];
+                this.$store.commit('setPlaying',res.data.songs[0])
             })
-            this.$http.get("http://47.100.49.193:3000/album?id=" + this.songDetail.al.id).then(res => {
+            this.$http.get(this.$api+'/album?id=' + this.songDetail.al.id).then(res => {
                 this.playImg = res.data.album.picUrl
             })
-            this.$http.get("http://47.100.49.193:3000/comment/music?id=" + 1294899029).then(res => {
+            this.$http.get(this.$api+'/comment/music?id=' + id).then(res => {
                 this.hotComments = res.data.hotComments.slice(0, 10);
                 this.comments = res.data.comments;
                 this.commentTotal = res.data.total;
             })
-            this.$http.get("http://47.100.49.193:3000/simi/playlist?id=" + 1294899029).then(res => {
+            this.$http.get(this.$api+'/simi/playlist?id=' + id).then(res => {
                 res.data.playlists.map(item => {
                     this.simiPlaylist.push({
                         desc: item.description,
@@ -175,7 +181,7 @@
                 })
             })
     
-            this.$http.get("http://47.100.49.193:3000/simi/song?id=" + 1294899029).then(res => {
+            this.$http.get(this.$api+'/simi/song?id=' + id).then(res => {
                 res.data.songs.slice(0, 5).map(item => {
                     this.simiSongs.push({
                         artName: item.artists[0].name,
@@ -185,7 +191,7 @@
                 })
             })
     
-            this.$http.get("http://47.100.49.193:3000/simi/user?id=1294899029").then(res => {
+            this.$http.get(this.$api+'/simi/user?id='+id).then(res => {
                 setTimeout(()=>{
                     let a =  res.data.userprofiles;
                     a.map(item => {
@@ -333,7 +339,6 @@
     }
     
     .songTitle {
-        border-bottom: 1px solid gainsboro;
         padding-bottom: 10px;
         margin-bottom: 20px;
         .songDes {
@@ -353,7 +358,6 @@
         height: 350px;
         text-align: left;
         overflow-y: auto;
-        border-right: 1px solid gainsboro;
         p {
             margin: 5px 0;
             font-size: 14px;
@@ -365,7 +369,6 @@
     }
     
     .playBtmDiv {
-        background-color: white;
         width: 100%;
         display: flex;
         .playBtmLeft {
@@ -411,7 +414,6 @@
                     margin-top: 5px;
                     justify-content: space-between;
                     .comtTime {
-                        color: gray
                     }
                 }
             }

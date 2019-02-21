@@ -6,12 +6,14 @@
         <img :src="avatarUrl" class="background">
         <div class="topHeader">
           <div class="topCenter">
-            <ul class='topRouter' @click='toRoute'>
-              <li v-for='item in routers' 
-                :key='item.id'
-                :data-v-url = "item.url"
-                :data-v-id = "item.id"
-                :class="{'active-li':actived==item.id}">{{item.name}}</li>
+            <ul class="topRouter" @click="toRoute">
+              <li
+                v-for="item in routers"
+                :key="item.id"
+                :data-v-url="item.url"
+                :data-v-id="item.id"
+                :class="{'active-li':actived==item.id}"
+              >{{item.name}}</li>
             </ul>
             <div class="topAther">
               <span class="buttonSpan">
@@ -38,30 +40,31 @@
         </div>
       </div>
     </div>
+    <div style="display:block;">
+      <el-progress :show-text="false" status="exception" color="rgb(214, 58, 57)" :percentage="10"></el-progress>
+    </div>
     <div class="playDiv">
-      <div class="playControl">
-        <i class="iconfont icon-shangyishou"></i>
-        <i class="iconfont icon-zanting iconCent" @click="togglePlay"></i>
-        <i class="iconfont icon-shangyishou1"></i>
+      <div>
+        <div>
+          <audio :src='getMusicUrl' autoplay ref='myAudio'></audio>
+          <img class="playImg" :src="getPlaying.al.picUrl">
+        </div>
+        <div class="playName">
+          <div>{{getPlaying.name}}</div>
+          <span>{{getPlaying.ar[0].name}}</span>
+        </div>
       </div>
-      <div style="display:block; width:410px;margin-left: 70px;">
-        <el-progress
-          :show-text="false"
-          status="exception"
-          color="rgb(214, 58, 57)"
-          :percentage="10"
-        ></el-progress>
+      <div class="playControl">
+        <i class="iconfont icon-heart"></i>
+        <i class="iconfont icon-icon--"></i>
+        <span class='playDuration'>00:00</span>
+        <i class="iconfont icon-shangyishoushangyige"></i>
+        <div class='iconCent'><i class="iconfont icon-bofang" @click="togglePlay"></i></div>
+        <i class="iconfont icon-xiayigexiayishou"></i>
+        <span class='playDuration'>{{duration}}</span>
       </div>
       <div style="align-items: center;margin-left:30px;">
         <i class="iconfont icon-icon-test2"></i>
-        <div class="sounds">
-          <el-progress
-            :show-text="false"
-            status="exception"
-            color="rgb(214, 58, 57)"
-            :percentage="10"
-          ></el-progress>
-        </div>
       </div>
     </div>
   </div>
@@ -69,7 +72,8 @@
 
 <script>
 import menus from "./Menus.vue";
-import { lt } from "semver";
+// import { lt } from "semver";
+import { mapGetters } from "vuex";
 export default {
   name: "landing-page",
   components: {
@@ -79,15 +83,16 @@ export default {
     return {
       hideLi: false,
       avatarUrl: "",
-      routers:[
-        {name:'个性推荐',url:'/page/findMusic/index/recommend',id:1},
-        {name:'歌单',url:'/page/findMusic/index/musics',id:2},
-        {name:'主播电台',url:'/page/findMusic/index/musics',id:3},
-        {name:'排行榜',url:'/page/findMusic/index/rank',id:4},
-        {name:'歌手',url:'/page/findMusic/index/rank',id:5},
-        {name:'最新音乐',url:'/page/findMusic/index/newest',id:6},
+      routers: [
+        { name: "个性推荐", url: "/page/findMusic/index/recommend", id: 1 },
+        { name: "歌单", url: "/page/findMusic/index/musics", id: 2 },
+        { name: "主播电台", url: "/page/findMusic/index/musics", id: 3 },
+        { name: "排行榜", url: "/page/findMusic/index/rank", id: 4 },
+        { name: "歌手", url: "/page/findMusic/index/rank", id: 5 },
+        { name: "最新音乐", url: "/page/findMusic/index/newest", id: 6 }
       ],
-      actived:1,
+      actived: 1,
+      duration:0,
     };
   },
   methods: {
@@ -98,11 +103,22 @@ export default {
       this.$store.commit("setIsPlaying");
     },
     toRoute(e) {
-      this.actived = e.target.dataset.vId
+      this.actived = e.target.dataset.vId;
       this.$router.push(e.target.dataset.vUrl);
     }
   },
+  computed: {
+    ...mapGetters(["getIsPlaying", "getPlaying", "getMusicUrl"])
+  },
   watch: {
+    getIsPlaying: function(a) {
+      this.isPlaying = a;
+    },
+    getMusicUrl(){
+      let temp = this.$refs.myAudio.duration
+      let tt = Math.floor(temp / 60)
+      this.duration = `0${tt}:${String(temp - tt * 60).substr(0, 2)}`
+    },
     $route(to) {
       let temp = to.name === "info";
       temp
@@ -128,7 +144,7 @@ div {
 
 .home,
 .content,
-.pages {  
+.pages {
   height: 100%;
 }
 .home,
@@ -152,6 +168,7 @@ div {
     margin-top: 80px;
   }
 }
+
 .topHeader {
   padding: 20px 0;
   height: 60px;
@@ -244,16 +261,16 @@ div {
 
 .playDiv {
   height: 65px;
-  width: 100%;
   display: flex;
+  justify-content: space-between;
+  padding: 2px 10px;
   align-items: center;
   background-color: #f6f6f6;
   .playControl {
     align-items: center;
-    i {
+    &>i {
       font-size: 20px;
-      color: white;
-      background-color: rgb(214, 58, 57);
+      color: black;
       border-radius: 50%;
       padding: 4px;
       margin-left: 20px;
@@ -261,6 +278,14 @@ div {
     .iconCent {
       font-size: 22px;
       padding: 6px;
+      border:1px solid currentColor;
+      border-radius: 50%;
+      margin-left: 20px;
+    }
+    .playDuration{
+      margin-left: 20px;
+      font-size:12px;
+
     }
   }
 }
@@ -268,7 +293,21 @@ div {
 .el-progress-bar__outer {
   background-color: #b0b0b0;
 }
-
+.playImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+}
+.playName {
+  flex-direction: column;
+  font-size: 14px;
+  margin-left: 10px;
+  span {
+    font-size: 13px;
+    color: gray;
+    margin-top: 5px;
+  }
+}
 .sounds {
   width: 100px;
   display: block;

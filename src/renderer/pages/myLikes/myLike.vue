@@ -7,7 +7,7 @@
     element-loading-spinner="el-icon-loading"
     element-loading-background="white"
   >
-    <div class="listTop">
+    <div class="listTop" v-show='playlist'>
       <img :src="playlist.coverImgUrl" class="q-background">
       <div>
         <img :src="playlist.coverImgUrl" style="width:180px;height:180px;border-radius:5px;">
@@ -83,8 +83,8 @@
             <th>歌手</th>
             <th>专辑</th>
           </thead>
-          <tbody @dblclick="handleClick">
-            <tr v-for="(item,index) in playlist.tracks" :key="item.id">
+          <tbody>
+            <tr v-for="(item,index) in playlist.tracks" :key="item.id" @dblclick="handleClick(item.id)">
               <td class="indexTd">{{String(index+1).padStart(2,0)}}</td>
               <td class="secTd">
                 <i class="iconfont icon-zan1"></i>
@@ -135,8 +135,8 @@ export default {
           this.loading = false;
         });
     },
-    handleClick() {
-      console.log(1);
+    handleClick(e) {
+      this.$router.push({ path: "/page/playing", query: { id: e } });
     }
   }
 };
