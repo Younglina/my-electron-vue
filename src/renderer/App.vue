@@ -10,7 +10,8 @@
   }
 </script>
 
-<style>
+<style lang='scss'>
+@import './assets/_comstyle.scss';
   /* CSS */
   html, body, #app{
     height: 100%;
@@ -20,4 +21,8 @@
   body{
     font-family: 'Source Sans Pro', sans-serif;
   }
+
+body{
+  // color: $brand-primary;
+}
 </style>
